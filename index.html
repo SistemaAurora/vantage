@@ -1,334 +1,237 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Menu, 
-  X, 
-  MessageCircle, 
-  ChevronDown, 
-  Clock, 
-  Globe, 
-  Truck, 
-  ShieldCheck 
-} from 'lucide-react';
-
-// --- DATA 2026 CON MARGEN DE S/600 ---
-const products = [
-  // iPHONE 16 SERIES
-  { id: '16pm-256', model: 'iPhone 16 Pro Max', capacity: '256GB', price: 3480, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-1-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521153584', category: 'iPhone 16', spec: 'Titanio Desierto' },
-  { id: '16p-256', model: 'iPhone 16 Pro', capacity: '256GB', price: 3200, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', category: 'iPhone 16', spec: 'Titanio Negro' },
-  { id: '16p-128', model: 'iPhone 16 Pro', capacity: '128GB', price: 3000, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', category: 'iPhone 16', spec: 'Titanio Natural' },
-  { id: '16pl-128', model: 'iPhone 16 Plus', capacity: '128GB', price: 2750, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-ultramarine?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', category: 'iPhone 16', spec: 'Ultramarino' },
-  { id: '16-128', model: 'iPhone 16', capacity: '128GB', price: 2650, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', category: 'iPhone 16', spec: 'Blanco' },
-  
-  // iPHONE 15 SERIES
-  { id: '15pm-512', model: 'iPhone 15 Pro Max', capacity: '512GB', price: 2920, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', category: 'iPhone 15', spec: 'Titanio Natural' },
-  { id: '15pm-256', model: 'iPhone 15 Pro Max', capacity: '256GB', price: 2890, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-blacktitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', category: 'iPhone 15', spec: 'Titanio Negro' },
-  { id: '15p-256', model: 'iPhone 15 Pro', capacity: '256GB', price: 2600, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', category: 'iPhone 15', spec: 'Titanio Azul' },
-  { id: '15p-128', model: 'iPhone 15 Pro', capacity: '128GB', price: 2450, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-whitetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', category: 'iPhone 15', spec: 'Titanio Blanco' },
-  { id: '15pl-256', model: 'iPhone 15 Plus', capacity: '256GB', price: 2500, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', category: 'iPhone 15', spec: 'Rosa' },
-  { id: '15pl-128', model: 'iPhone 15 Plus', capacity: '128GB', price: 2400, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', category: 'iPhone 15', spec: 'Azul' },
-  { id: '15-128', model: 'iPhone 15', capacity: '128GB', price: 2200, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', category: 'iPhone 15', spec: 'Negro' },
-
-  // iPHONE 14 SERIES
-  { id: '14pm-256', model: 'iPhone 14 Pro Max', capacity: '256GB', price: 2600, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', category: 'iPhone 14', spec: 'Morado Oscuro' },
-  { id: '14pm-128', model: 'iPhone 14 Pro Max', capacity: '128GB', price: 2500, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-spaceblack?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', category: 'iPhone 14', spec: 'Negro Espacial' },
-  { id: '14p-256', model: 'iPhone 14 Pro', capacity: '256GB', price: 2240, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-gold?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', category: 'iPhone 14', spec: 'Oro' },
-  { id: '14p-128', model: 'iPhone 14 Pro', capacity: '128GB', price: 2100, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-silver?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', category: 'iPhone 14', spec: 'Plata' },
-  { id: '14-128', model: 'iPhone 14', capacity: '128GB', price: 1850, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1661026582320', category: 'iPhone 14', spec: 'Azul' },
-
-  // iPHONE 13 SERIES
-  { id: '13pm-128', model: 'iPhone 13 Pro Max', capacity: '128GB', price: 2120, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-max-graphite-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652956000', category: 'iPhone 13', spec: 'Grafito' },
-  { id: '13p-256', model: 'iPhone 13 Pro', capacity: '256GB', price: 2030, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-sierra-blue-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', category: 'iPhone 13', spec: 'Azul Sierra' },
-  { id: '13p-128', model: 'iPhone 13 Pro', capacity: '128GB', price: 1950, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-gold-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', category: 'iPhone 13', spec: 'Oro' },
-  { id: '13-128', model: 'iPhone 13', capacity: '128GB', price: 1800, image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1654902143714', category: 'iPhone 13', spec: 'Rosa' },
-];
-
-const categories = ['Todos', 'iPhone 16', 'iPhone 15', 'iPhone 14', 'iPhone 13'];
-
-export default function App() {
-  const [activeCategory, setActiveCategory] = useState('Todos');
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const catalogRef = useRef(null);
-
-  const whatsappNumber = '51906703606';
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleCategoryClick = (cat) => {
-    setActiveCategory(cat);
-    setMobileMenu(false);
-    setTimeout(() => {
-      catalogRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-  };
-
-  const filteredProducts = activeCategory === 'Todos' 
-    ? products 
-    : products.filter(p => p.category === activeCategory);
-
-  const openWhatsApp = (product) => {
-    const text = product 
-      ? `Hola Vantage! 👋 Deseo importar el ${product.model} (${product.capacity}) por S/${product.price}. Acepto el tiempo de entrega de 5-7 días y los 6 meses de garantía. ¿Cómo procedemos?`
-      : `Hola Vantage! 👋 Deseo información sobre el proceso de importación USA 2026.`;
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
-  };
-
-  return (
-    <div className="bg-[#030303] text-white min-h-screen font-sans selection:bg-white selection:text-black antialiased">
-      
-      {/* --- NOTIFICATION BAR --- */}
-      <div className="bg-white text-black py-2 text-center text-[10px] font-bold uppercase tracking-[0.3em] z-[60] relative">
-        📦 Importación USA Directa: Entrega estimada 5-7 días hábiles
-      </div>
-
-      {/* --- NAVIGATION --- */}
-      <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-black/90 backdrop-blur-xl border-b border-white/5 py-4 top-0' : 'bg-transparent py-8 top-8'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-1 cursor-pointer" onClick={() => handleCategoryClick('Todos')}>
-            <span className="text-2xl font-black tracking-[0.25em] uppercase">Vantage</span>
-          </div>
-          
-          <div className="hidden lg:flex items-center space-x-8">
-            {categories.map(cat => (
-              <button 
-                key={cat} 
-                onClick={() => handleCategoryClick(cat)}
-                className={`text-[10px] uppercase tracking-[0.3em] transition-all hover:text-white ${activeCategory === cat ? 'text-white font-bold underline underline-offset-8' : 'text-white/30'}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-6">
-             <button 
-                onClick={() => openWhatsApp()}
-                className="hidden md:flex items-center gap-2 border border-white/10 bg-white/5 px-6 py-2 rounded-full text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all"
-              >
-                Inicia Importación
-              </button>
-              <button className="lg:hidden" onClick={() => setMobileMenu(!mobileMenu)}>
-                {mobileMenu ? <X /> : <Menu />}
-              </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* --- HERO --- */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-[#030303] z-10" />
-          <img 
-            src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=2000" 
-            className="w-full h-full object-cover opacity-30 scale-105"
-            alt="Vantage Hero 2026"
-          />
-        </div>
-        
-        <div className="relative z-20 text-center px-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-white/10 bg-white/5 mb-8 animate-fade-in">
-            <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-white/60">Importación Express USA 2026</span>
-          </div>
-          
-          <h1 className="text-7xl md:text-[160px] font-black tracking-tighter leading-none mb-6 opacity-0 animate-slide-up select-none" style={{ animationFillMode: 'forwards' }}>
-            VANTAGE<span className="text-white/10 italic">.</span>
-          </h1>
-          
-          <p className="max-w-2xl mx-auto text-sm md:text-lg font-light text-white/40 mb-12 leading-relaxed uppercase tracking-[0.2em]">
-            Los mejores precios de importación en Perú. <br/>
-            Equipos certificados con 6 meses de garantía. <br/>
-            Recibe tu equipo en 5 a 7 días.
-          </p>
-
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <button 
-              onClick={() => catalogRef.current?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-white text-black px-12 py-5 rounded-full font-black text-xs tracking-widest uppercase hover:scale-105 transition-transform"
-            >
-              Explorar Catálogo 2026
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* --- PROCESS STEPS --- */}
-      <section className="max-w-7xl mx-auto px-6 py-24 border-y border-white/5">
-         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center">
-            {[
-                { icon: <Globe size={24}/>, title: "Origen USA", desc: "Equipos seleccionados DirectAuth / Verizon." },
-                { icon: <Clock size={24}/>, title: "5-7 Días", desc: "Tiempo récord de llegada al Perú." },
-                { icon: <Truck size={24}/>, title: "Delivery", desc: "Envíos asegurados por Olva o Shalom." },
-                { icon: <ShieldCheck size={24}/>, title: "Garantía 6M", desc: "Cobertura total Vantage por 6 meses." }
-            ].map((step, i) => (
-                <div key={i} className="group">
-                    <div className="text-white/20 group-hover:text-white transition-colors mb-4 flex justify-center">{step.icon}</div>
-                    <h6 className="text-[10px] font-black uppercase tracking-widest mb-2">{step.title}</h6>
-                    <p className="text-xs text-white/30 font-light">{step.desc}</p>
-                </div>
-            ))}
-         </div>
-      </section>
-
-      {/* --- CATALOG GRID --- */}
-      <section ref={catalogRef} id="grid" className="max-w-[1400px] mx-auto px-6 py-40 scroll-mt-24">
-        <div className="mb-20 text-center">
-          <span className="text-white/10 text-xs tracking-[0.5em] uppercase mb-4 block font-black">Pre-Order Catalog</span>
-          <h3 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic">{activeCategory}</h3>
-          
-          {/* CATEGORY BUTTONS INSIDE CATALOG */}
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-            {categories.map(cat => (
-              <button 
-                key={cat} 
-                onClick={() => handleCategoryClick(cat)}
-                className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-widest border transition-all ${activeCategory === cat ? 'bg-white text-black border-white font-black' : 'bg-transparent text-white/40 border-white/10 hover:border-white/40'}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-32 gap-x-12 mt-20">
-          {filteredProducts.map((product) => (
-            <div 
-              key={product.id} 
-              className="group relative flex flex-col cursor-pointer"
-              onClick={() => openWhatsApp(product)}
-            >
-              {/* Product Card */}
-              <div className="relative aspect-[4/5] bg-gradient-to-b from-[#0f0f0f] to-black rounded-[2rem] overflow-hidden border border-white/5 transition-all duration-700 group-hover:border-white/20 group-hover:translate-y-[-10px]">
-                
-                {/* Status Badge */}
-                <div className="absolute top-8 left-8 z-20 flex flex-col gap-2">
-                    <span className="bg-white/5 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest text-white/50">
-                        {product.spec}
-                    </span>
-                    <span className="bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest text-blue-400">
-                        Importación: 5-7 Días
-                    </span>
-                </div>
-
-                {/* Main Image */}
-                <div className="h-full w-full p-4 flex items-center justify-center relative z-10 transition-transform duration-1000 group-hover:scale-105">
-                  <img 
-                    src={product.image} 
-                    alt={product.model}
-                    className="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl"
-                  />
-                </div>
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center p-8 text-center z-30">
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-                        <MessageCircle size={28} className="text-black" />
-                    </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-2">Comprar por WhatsApp</p>
-                    <p className="text-white/40 text-[9px] uppercase tracking-widest italic">Garantía Vantage: 6 Meses</p>
-                </div>
-              </div>
-
-              {/* Product Details */}
-              <div className="mt-10 px-4 text-center">
-                <h4 className="text-4xl font-black tracking-tighter mb-2 italic group-hover:text-white transition-colors">
-                    {product.model}
-                </h4>
-                <div className="flex items-center justify-center gap-4 mb-4">
-                    <span className="text-[11px] font-bold text-white/20 uppercase tracking-widest">{product.capacity}</span>
-                    <div className="h-1 w-1 bg-white/10 rounded-full" />
-                    <span className="text-[11px] font-black text-green-500 uppercase tracking-widest italic">Excelente Condición</span>
-                </div>
-                <div className="text-4xl font-light tracking-tighter text-white/90">
-                    S/{product.price.toLocaleString()}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* --- WHY VANTAGE --- */}
-      <section className="bg-white text-black py-40">
-        <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-24 gap-12 text-center md:text-left">
-                <h2 className="text-5xl md:text-8xl font-black tracking-tighter italic leading-none uppercase">CALIDAD<br/>IMPORT.</h2>
-                <p className="max-w-md text-sm font-medium uppercase tracking-widest leading-loose opacity-60">
-                    Equipos seleccionados bajo estándares rigurosos de batería (85%-100%) y estética impecable.
-                </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-black/10 pt-16">
-                <div>
-                    <span className="text-4xl font-black italic block mb-4">01.</span>
-                    <h5 className="text-xl font-black mb-4 uppercase tracking-tighter">Batería Óptima</h5>
-                    <p className="text-xs font-medium opacity-50 uppercase tracking-widest">Todos nuestros equipos garantizan un ciclo de vida saludable entre 85% y 100%.</p>
-                </div>
-                <div>
-                    <span className="text-4xl font-black italic block mb-4">02.</span>
-                    <h5 className="text-xl font-black mb-4 uppercase tracking-tighter">Envío Express</h5>
-                    <p className="text-xs font-medium opacity-50 uppercase tracking-widest">No esperes meses. Nuestra logística aérea propia nos permite entregar en máximo 7 días.</p>
-                </div>
-                <div>
-                    <span className="text-4xl font-black italic block mb-4">03.</span>
-                    <h5 className="text-xl font-black mb-4 uppercase tracking-tighter">Soporte Local</h5>
-                    <p className="text-xs font-medium opacity-50 uppercase tracking-widest">Garantía real de 6 meses gestionada directamente en Lima. Cero complicaciones.</p>
-                </div>
-            </div>
-        </div>
-      </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="py-24 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-20">
-          <div className="space-y-4">
-            <span className="text-4xl font-black tracking-[0.2em] uppercase block">VANTAGE</span>
-            <p className="text-white/20 text-[10px] tracking-[0.4em] uppercase font-black">Tu enlace directo con la mejor tecnología USA.</p>
-          </div>
-          
-          <div className="flex flex-col items-start md:items-end gap-6 w-full md:w-auto">
-            <button 
-              onClick={() => openWhatsApp()}
-              className="bg-white text-black w-full md:w-auto px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-[0.2em] hover:scale-105 transition-transform"
-            >
-              Pedir Cotización Personalizada
-            </button>
-            <div className="flex gap-8 text-[9px] uppercase tracking-[0.4em] text-white/20 font-black">
-                <span className="text-green-500">Online 2026</span>
-                <span>Garantía 6 Meses</span>
-                <span>Lima — Peru</span>
-            </div>
-          </div>
-        </div>
-        <div className="mt-24 text-center text-[9px] text-white/5 tracking-[0.8em] uppercase font-black">
-          © 2026 VANTAGE STORE PERÚ — TRADING THE FUTURE.
-        </div>
-      </footer>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes slide-up {
-          from { transform: translateY(80px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANTAGE — Importación Directa USA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --apple-black: #030303;
+            --apple-gray: #1d1d1f;
         }
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--apple-black);
+            color: white;
+            overflow-x: hidden;
         }
-        .animate-slide-up { animation: slide-up 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-fade-in { animation: fade-in 1.8s ease-out forwards; }
+        .hero-gradient {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #030303 100%);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .product-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+        }
+        .btn-premium {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
         
-        html { scroll-behavior: smooth; }
+        /* Ocultar scrollbar */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-      `}} />
+    </style>
+</head>
+<body>
+
+    <!-- Notification Bar -->
+    <div class="bg-white text-black py-2 text-center text-[9px] font-black uppercase tracking-[0.4em] fixed top-0 w-full z-[100]">
+        Importación Directa USA • 5-7 Días Hábiles • 6 Meses de Garantía
     </div>
-  );
-}
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-[90] transition-all duration-500 py-8 top-6">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-[0.3em] uppercase cursor-pointer">Vantage</div>
+            <div class="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.3em] text-white/40">
+                <a href="#catalogo" class="hover:text-white transition-colors">iPhone 16</a>
+                <a href="#catalogo" class="hover:text-white transition-colors">iPhone 15</a>
+                <a href="#catalogo" class="hover:text-white transition-colors">iPhone 14</a>
+                <a href="#catalogo" class="hover:text-white transition-colors">iPhone 13</a>
+            </div>
+            <button onclick="contactar()" class="glass px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest btn-premium">
+                Importar Ahora
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-screen flex flex-col items-center justify-center relative px-6 hero-gradient overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=2000" class="w-full h-full object-cover" alt="Background">
+        </div>
+        
+        <div class="text-center z-10">
+            <span class="inline-block border border-white/10 bg-white/5 px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.5em] text-white/40 mb-8 animate-up">
+                Selección Premium USA
+            </span>
+            <h1 class="text-7xl md:text-[180px] font-black tracking-tighter leading-none mb-4 animate-up delay-1">
+                VANTAGE<span class="text-white/10 italic">.</span>
+            </h1>
+            <p class="text-sm md:text-xl font-light uppercase tracking-[0.4em] text-white/30 mb-12 animate-up delay-2">
+                Importamos tus sueños a precio de costo.
+            </p>
+            <a href="#catalogo" class="inline-block bg-white text-black px-12 py-5 rounded-full font-black text-xs tracking-widest uppercase btn-premium animate-up delay-2">
+                Ver Catálogo 2026
+            </a>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-20">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalogo" class="py-40 px-6 max-w-[1400px] mx-auto">
+        <div class="text-center mb-32">
+            <h2 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-4">Stock USA</h2>
+            <p class="text-white/20 text-xs tracking-[0.5em] uppercase">Precios actualizados con margen competitivo</p>
+        </div>
+
+        <div id="grid-productos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <!-- Los productos se cargan via JS -->
+        </div>
+    </section>
+
+    <!-- Why Vantage -->
+    <section class="bg-white text-black py-40">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+                <h2 class="text-6xl md:text-9xl font-black italic leading-none tracking-tighter uppercase">LÍDER EN<br/>PRECIOS.</h2>
+                <div>
+                    <p class="text-lg font-medium leading-relaxed opacity-60 uppercase tracking-widest mb-12">
+                        Trabajamos con DirectAuth y Verizon para traerte equipos Grado A+ (85%-100% batería) sin intermediarios. Nuestra logística es tu ventaja.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
+                            <span class="font-black text-2xl">01</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">Garantía Real de 6 Meses</span>
+                        </div>
+                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
+                            <span class="font-black text-2xl">02</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">Entrega en 5-7 Días</span>
+                        </div>
+                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
+                            <span class="font-black text-2xl">03</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">Equipos Certificados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-24 px-6 text-center border-t border-white/5">
+        <div class="text-4xl font-black tracking-[0.3em] uppercase mb-12">VANTAGE</div>
+        <button onclick="contactar()" class="bg-white text-black px-12 py-5 rounded-full font-black text-xs tracking-widest uppercase btn-premium mb-20">
+            Hablar con un asesor
+        </button>
+        <div class="text-[9px] text-white/10 font-black tracking-[0.8em] uppercase">
+            © 2026 Vantage Store Perú — Lima & USA
+        </div>
+    </footer>
+
+    <script>
+        // DATA OFICIAL DEL PROVEEDOR + MARGEN OPTIMIZADO PARA COMPETIR
+        // He aplicado márgenes variables (entre S/500 y S/700) para ser el más barato del mercado
+        const productos = [
+            // iPHONE 16
+            { model: 'iPhone 16 Pro Max', cap: '256GB', cost: 2880, margin: 700, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-1-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521153584', spec: 'Titanio' },
+            { model: 'iPhone 16 Pro', cap: '256GB', cost: 2600, margin: 650, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', spec: 'Pro Cam' },
+            { model: 'iPhone 16 Pro', cap: '128GB', cost: 2400, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', spec: 'Titanio' },
+            { model: 'iPhone 16 Plus', cap: '128GB', cost: 2150, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-ultramarine?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', spec: 'Vibrant' },
+            { model: 'iPhone 16', cap: '128GB', cost: 2050, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', spec: 'New Generation' },
+            
+            // iPHONE 15
+            { model: 'iPhone 15 Pro Max', cap: '512GB', cost: 2320, margin: 650, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', spec: 'Max Storage' },
+            { model: 'iPhone 15 Pro Max', cap: '256GB', cost: 2290, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-blacktitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', spec: 'Top Seller' },
+            { model: 'iPhone 15 Pro', cap: '256GB', cost: 2000, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', spec: 'Titanio Azul' },
+            { model: 'iPhone 15 Pro', cap: '128GB', cost: 1850, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-whitetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', spec: 'Titanio Blanco' },
+            { model: 'iPhone 15 Plus', cap: '256GB', cost: 1900, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Pink Edition' },
+            { model: 'iPhone 15 Plus', cap: '128GB', cost: 1800, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Great Battery' },
+            { model: 'iPhone 15', cap: '128GB', cost: 1600, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Black' },
+
+            // iPHONE 14
+            { model: 'iPhone 14 Pro Max', cap: '256GB', cost: 2000, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Dynamic Island' },
+            { model: 'iPhone 14 Pro Max', cap: '128GB', cost: 1900, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-spaceblack?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Space Black' },
+            { model: 'iPhone 14 Pro', cap: '256GB', cost: 1640, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-gold?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Golden' },
+            { model: 'iPhone 14 Pro', cap: '128GB', cost: 1500, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-silver?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Silver' },
+            { model: 'iPhone 14', cap: '128GB', cost: 1250, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1661026582320', spec: 'Blue' },
+
+            // iPHONE 13
+            { model: 'iPhone 13 Pro Max', cap: '128GB', cost: 1520, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-max-graphite-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652956000', spec: 'Graphite' },
+            { model: 'iPhone 13 Pro', cap: '256GB', cost: 1430, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-sierra-blue-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', spec: 'Sierra Blue' },
+            { model: 'iPhone 13 Pro', cap: '128GB', cost: 1350, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-gold-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', spec: 'Gold Classic' },
+            { model: 'iPhone 13', cap: '128GB', cost: 1200, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1654902143714', spec: 'Pink' },
+        ];
+
+        const grid = document.getElementById('grid-productos');
+
+        function renderProductos() {
+            grid.innerHTML = productos.map(p => {
+                const finalPrice = p.cost + p.margin;
+                return `
+                    <div class="product-card glass rounded-[2.5rem] p-10 flex flex-col items-center text-center transition-all duration-700 cursor-pointer" onclick="comprar('${p.model}', '${p.cap}', ${finalPrice})">
+                        <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/30 mb-8 border border-white/5 px-4 py-1 rounded-full">${p.spec}</span>
+                        <div class="h-64 flex items-center justify-center mb-10 transition-transform duration-700 hover:scale-110">
+                            <img src="${p.img}" class="max-h-full drop-shadow-2xl" alt="${p.model}">
+                        </div>
+                        <h3 class="text-3xl font-black tracking-tighter italic mb-2">${p.model}</h3>
+                        <p class="text-[10px] font-bold text-white/20 tracking-[0.3em] uppercase mb-6">${p.cap} • USA DIRECT</p>
+                        <div class="text-4xl font-light tracking-tighter">S/${finalPrice.toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function comprar(modelo, cap, precio) {
+            const mensaje = `Hola Vantage! 👋 Me interesa el ${modelo} de ${cap} por S/${precio.toLocaleString()}. Por favor, confírmame los pasos para iniciar la importación desde USA (5-7 días).`;
+            const url = `https://wa.me/51906703606?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        function contactar() {
+            const mensaje = `Hola Vantage! 👋 Deseo información sobre el catálogo de importación 2026.`;
+            const url = `https://wa.me/51906703606?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        // Navbar effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-black/90', 'backdrop-blur-xl', 'py-4');
+                nav.classList.remove('py-8');
+            } else {
+                nav.classList.remove('bg-black/90', 'backdrop-blur-xl', 'py-4');
+                nav.classList.add('py-8');
+            }
+        });
+
+        window.onload = renderProductos;
+    </script>
+</body>
+</html>
