@@ -43,12 +43,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-up {
+            opacity: 0;
             animation: fadeInUp 1s ease-out forwards;
         }
         .delay-1 { animation-delay: 0.2s; }
         .delay-2 { animation-delay: 0.4s; }
         
-        /* Ocultar scrollbar */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -91,15 +91,11 @@
                 VANTAGE<span class="text-white/10 italic">.</span>
             </h1>
             <p class="text-sm md:text-xl font-light uppercase tracking-[0.4em] text-white/30 mb-12 animate-up delay-2">
-                Importamos tus sueños a precio de costo.
+                Logística directa. Precios de origen.
             </p>
             <a href="#catalogo" class="inline-block bg-white text-black px-12 py-5 rounded-full font-black text-xs tracking-widest uppercase btn-premium animate-up delay-2">
-                Ver Catálogo 2026
+                Explorar Catálogo
             </a>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-20">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
         </div>
     </section>
 
@@ -107,11 +103,11 @@
     <section id="catalogo" class="py-40 px-6 max-w-[1400px] mx-auto">
         <div class="text-center mb-32">
             <h2 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-4">Stock USA</h2>
-            <p class="text-white/20 text-xs tracking-[0.5em] uppercase">Precios actualizados con margen competitivo</p>
+            <p class="text-white/20 text-xs tracking-[0.5em] uppercase">Disponibilidad inmediata para importación</p>
         </div>
 
         <div id="grid-productos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            <!-- Los productos se cargan via JS -->
+            <!-- Render dinámico -->
         </div>
     </section>
 
@@ -119,25 +115,11 @@
     <section class="bg-white text-black py-40">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <h2 class="text-6xl md:text-9xl font-black italic leading-none tracking-tighter uppercase">LÍDER EN<br/>PRECIOS.</h2>
+                <h2 class="text-6xl md:text-9xl font-black italic leading-none tracking-tighter uppercase">CALIDAD<br/>GRADO A.</h2>
                 <div>
                     <p class="text-lg font-medium leading-relaxed opacity-60 uppercase tracking-widest mb-12">
-                        Trabajamos con DirectAuth y Verizon para traerte equipos Grado A+ (85%-100% batería) sin intermediarios. Nuestra logística es tu ventaja.
+                        Equipos seleccionados bajo estrictos estándares. Baterías óptimas y estética impecable. Sin intermediarios locales.
                     </p>
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
-                            <span class="font-black text-2xl">01</span>
-                            <span class="text-xs font-bold uppercase tracking-widest">Garantía Real de 6 Meses</span>
-                        </div>
-                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
-                            <span class="font-black text-2xl">02</span>
-                            <span class="text-xs font-bold uppercase tracking-widest">Entrega en 5-7 Días</span>
-                        </div>
-                        <div class="flex items-center gap-4 border-b border-black/10 pb-4">
-                            <span class="font-black text-2xl">03</span>
-                            <span class="text-xs font-bold uppercase tracking-widest">Equipos Certificados</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -147,45 +129,43 @@
     <footer class="py-24 px-6 text-center border-t border-white/5">
         <div class="text-4xl font-black tracking-[0.3em] uppercase mb-12">VANTAGE</div>
         <button onclick="contactar()" class="bg-white text-black px-12 py-5 rounded-full font-black text-xs tracking-widest uppercase btn-premium mb-20">
-            Hablar con un asesor
+            Consultar Stock Personalizado
         </button>
         <div class="text-[9px] text-white/10 font-black tracking-[0.8em] uppercase">
-            © 2026 Vantage Store Perú — Lima & USA
+            © 2026 Vantage Store Perú
         </div>
     </footer>
 
     <script>
-        // DATA OFICIAL DEL PROVEEDOR + MARGEN OPTIMIZADO PARA COMPETIR
-        // He aplicado márgenes variables (entre S/500 y S/700) para ser el más barato del mercado
         const productos = [
-            // iPHONE 16
-            { model: 'iPhone 16 Pro Max', cap: '256GB', cost: 2880, margin: 700, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-1-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521153584', spec: 'Titanio' },
-            { model: 'iPhone 16 Pro', cap: '256GB', cost: 2600, margin: 650, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', spec: 'Pro Cam' },
-            { model: 'iPhone 16 Pro', cap: '128GB', cost: 2400, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1722521152111', spec: 'Titanio' },
-            { model: 'iPhone 16 Plus', cap: '128GB', cost: 2150, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-ultramarine?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', spec: 'Vibrant' },
-            { model: 'iPhone 16', cap: '128GB', cost: 2050, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1721923274737', spec: 'New Generation' },
+            // iPHONE 16 SERIES
+            { model: 'iPhone 16 Pro Max', cap: '256GB', cost: 2880, margin: 700, img: 'https://pe.tiendasishop.com/cdn/shop/files/IMG-14858901.jpg?v=1726616663&width=823', spec: 'Titanio Negro' },
+            { model: 'iPhone 16 Pro', cap: '256GB', cost: 2600, margin: 650, img: 'https://pe.tiendasishop.com/cdn/shop/files/IMG-14858911_f2649c22-042e-43e0-a679-a527de575775.jpg?v=1726618557&width=823', spec: 'Titanio Desierto' },
+            { model: 'iPhone 16 Pro', cap: '128GB', cost: 2400, margin: 600, img: 'https://pe.tiendasishop.com/cdn/shop/files/IMG-14858911_f2649c22-042e-43e0-a679-a527de575775.jpg?v=1726618557&width=823', spec: 'Titanio Desierto' },
+            { model: 'iPhone 16 Plus', cap: '128GB', cost: 2150, margin: 550, img: 'https://pe.tiendasishop.com/cdn/shop/files/IMG-14858971.jpg?v=1726615422&width=823', spec: 'Ultramarino' },
+            { model: 'iPhone 16', cap: '128GB', cost: 2050, margin: 550, img: 'https://pe.tiendasishop.com/cdn/shop/files/IMG-14858981_2712d6aa-4de6-463b-bb43-7a4823da225a.jpg?v=1726615976&width=823', spec: 'Blanco' },
             
-            // iPHONE 15
-            { model: 'iPhone 15 Pro Max', cap: '512GB', cost: 2320, margin: 650, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', spec: 'Max Storage' },
-            { model: 'iPhone 15 Pro Max', cap: '256GB', cost: 2290, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-finish-select-202309-6-7inch-blacktitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702723', spec: 'Top Seller' },
-            { model: 'iPhone 15 Pro', cap: '256GB', cost: 2000, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', spec: 'Titanio Azul' },
-            { model: 'iPhone 15 Pro', cap: '128GB', cost: 1850, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-whitetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692846367180', spec: 'Titanio Blanco' },
-            { model: 'iPhone 15 Plus', cap: '256GB', cost: 1900, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Pink Edition' },
-            { model: 'iPhone 15 Plus', cap: '128GB', cost: 1800, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Great Battery' },
-            { model: 'iPhone 15', cap: '128GB', cost: 1600, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972', spec: 'Black' },
+            // iPHONE 15 SERIES
+            { model: 'iPhone 15 Pro Max', cap: '256GB', cost: 2290, margin: 600, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_761394-MLA94073823389_102025-F.webp', spec: 'Titanio Natural' },
+            { model: 'iPhone 15 Pro Max', cap: '512GB', cost: 2320, margin: 650, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_701639-MLA96139244565_102025-F.webp', spec: 'Titanio Negro' },
+            { model: 'iPhone 15 Pro', cap: '256GB', cost: 2000, margin: 600, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_691262-MLA96638020530_112025-F.webp', spec: 'Titanio Azul' },
+            { model: 'iPhone 15 Pro', cap: '128GB', cost: 1850, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_887271-MLA104463479142_012026-F.webp', spec: 'Titanio Blanco' },
+            { model: 'iPhone 15 Plus', cap: '128GB', cost: 1800, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_651103-MLA95933996753_102025-F.webp', spec: 'Rosa' },
+            { model: 'iPhone 15 Plus', cap: '256GB', cost: 1900, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_615312-MLA95936538131_102025-F.webp', spec: 'Azul' },
+            { model: 'iPhone 15', cap: '128GB', cost: 1600, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_880728-MLA95496642478_102025-F.webp', spec: 'Negro' },
 
-            // iPHONE 14
-            { model: 'iPhone 14 Pro Max', cap: '256GB', cost: 2000, margin: 600, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Dynamic Island' },
-            { model: 'iPhone 14 Pro Max', cap: '128GB', cost: 1900, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-spaceblack?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Space Black' },
-            { model: 'iPhone 14 Pro', cap: '256GB', cost: 1640, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-gold?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Golden' },
-            { model: 'iPhone 14 Pro', cap: '128GB', cost: 1500, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-silver?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1663703841896', spec: 'Silver' },
-            { model: 'iPhone 14', cap: '128GB', cost: 1250, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1661026582320', spec: 'Blue' },
+            // iPHONE 14 SERIES
+            { model: 'iPhone 14 Pro Max', cap: '256GB', cost: 2000, margin: 600, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_780151-MLA95680390734_102025-F.webp', spec: 'Morado' },
+            { model: 'iPhone 14 Pro Max', cap: '128GB', cost: 1900, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_741896-MLA96155379833_102025-F.webp', spec: 'Espacial' },
+            { model: 'iPhone 14 Pro', cap: '256GB', cost: 1640, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_750485-MLM51559388158_092022-F.webp', spec: 'Oro' },
+            { model: 'iPhone 14 Pro', cap: '128GB', cost: 1500, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_707630-MLM51559386375_092022-F.webp', spec: 'Plata' },
+            { model: 'iPhone 14', cap: '128GB', cost: 1250, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_959315-MLA94916050532_102025-F.webp', spec: 'Azul' },
 
-            // iPHONE 13
-            { model: 'iPhone 13 Pro Max', cap: '128GB', cost: 1520, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-max-graphite-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652956000', spec: 'Graphite' },
-            { model: 'iPhone 13 Pro', cap: '256GB', cost: 1430, margin: 550, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-sierra-blue-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', spec: 'Sierra Blue' },
-            { model: 'iPhone 13 Pro', cap: '128GB', cost: 1350, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-pro-gold-select?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1631652955000', spec: 'Gold Classic' },
-            { model: 'iPhone 13', cap: '128GB', cost: 1200, margin: 500, img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1654902143714', spec: 'Pink' },
+            // iPHONE 13 SERIES
+            { model: 'iPhone 13 Pro Max', cap: '128GB', cost: 1520, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_782645-MLA94005168174_102025-F.webp', spec: 'Grafito' },
+            { model: 'iPhone 13 Pro', cap: '256GB', cost: 1430, margin: 550, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_649602-MLA47778541962_102021-F.webp', spec: 'Azul Sierra' },
+            { model: 'iPhone 13 Pro', cap: '128GB', cost: 1350, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_866117-MLA47778565361_102021-F.webp', spec: 'Oro' },
+            { model: 'iPhone 13', cap: '128GB', cost: 1200, margin: 500, img: 'https://http2.mlstatic.com/D_NQ_NP_2X_846236-MLA96077481755_102025-F.webp', spec: 'Rosa' },
         ];
 
         const grid = document.getElementById('grid-productos');
@@ -197,7 +177,7 @@
                     <div class="product-card glass rounded-[2.5rem] p-10 flex flex-col items-center text-center transition-all duration-700 cursor-pointer" onclick="comprar('${p.model}', '${p.cap}', ${finalPrice})">
                         <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/30 mb-8 border border-white/5 px-4 py-1 rounded-full">${p.spec}</span>
                         <div class="h-64 flex items-center justify-center mb-10 transition-transform duration-700 hover:scale-110">
-                            <img src="${p.img}" class="max-h-full drop-shadow-2xl" alt="${p.model}">
+                            <img src="${p.img}" class="max-h-full drop-shadow-2xl object-contain" alt="${p.model}" loading="lazy">
                         </div>
                         <h3 class="text-3xl font-black tracking-tighter italic mb-2">${p.model}</h3>
                         <p class="text-[10px] font-bold text-white/20 tracking-[0.3em] uppercase mb-6">${p.cap} • USA DIRECT</p>
@@ -208,28 +188,16 @@
         }
 
         function comprar(modelo, cap, precio) {
-            const mensaje = `Hola Vantage! 👋 Me interesa el ${modelo} de ${cap} por S/${precio.toLocaleString()}. Por favor, confírmame los pasos para iniciar la importación desde USA (5-7 días).`;
+            const mensaje = `Hola Vantage! 👋 Me interesa el ${modelo} de ${cap} por S/${precio.toLocaleString()}. ¿Cuál es el proceso de importación?`;
             const url = `https://wa.me/51906703606?text=${encodeURIComponent(mensaje)}`;
             window.open(url, '_blank');
         }
 
         function contactar() {
-            const mensaje = `Hola Vantage! 👋 Deseo información sobre el catálogo de importación 2026.`;
+            const mensaje = `Hola Vantage! 👋 Deseo información sobre el catálogo de importación.`;
             const url = `https://wa.me/51906703606?text=${encodeURIComponent(mensaje)}`;
             window.open(url, '_blank');
         }
-
-        // Navbar effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('bg-black/90', 'backdrop-blur-xl', 'py-4');
-                nav.classList.remove('py-8');
-            } else {
-                nav.classList.remove('bg-black/90', 'backdrop-blur-xl', 'py-4');
-                nav.classList.add('py-8');
-            }
-        });
 
         window.onload = renderProductos;
     </script>
